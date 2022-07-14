@@ -4,7 +4,7 @@
 CustomRow = WRAM_Temp+$10
 
 .define MENU_ROW_LENGTH 16
-.define MENU_ROW_COUNT 14
+.define MENU_ROW_COUNT 16
 
 pm_empty_row:
 	.byte "                "
@@ -30,6 +30,16 @@ pm_show_rule_row:
 	.byte $24, " SHOW  RULE ", $24, $24, $24
 pm_show_sock_row:
 	.byte $24, " SHOW  SOCK ", $24, $24, $24
+
+pm_input_on_row:
+	.byte $24, " INPUT ON   ", $24, $24, $24
+pm_input_off_row:
+	.byte $24, " INPUT OFF  ", $24, $24, $24
+
+pm_hud_on_row:
+	.byte $24, " HUD   ON   ", $24, $24, $24
+pm_hud_off_row:
+	.byte $24, " HUD   OFF  ", $24, $24, $24
 
 pm_star_row:
 	.byte $24, " GET STAR   ", $24, $24, $24
@@ -123,13 +133,30 @@ _draw_pm_row_4:
 		row_render_data $23D0, pm_attr_data
 		inc $07
 		jsr draw_prepared_row
-
 		row_render_data $2100, pm_show_sock_row
 		lda WRAM_PracticeFlags
 		and #PF_SockMode
 		bne @is_sock
 		row_render_data $2100, pm_show_rule_row
 	@is_sock:
+		rts
+
+_draw_pm_row_5:
+		row_render_data $2120, pm_input_on_row
+		lda WRAM_PracticeFlags
+		and #PF_InputMode
+		bne @input_on
+		row_render_data $2120, pm_input_off_row
+	@input_on:
+		rts
+
+_draw_pm_row_6:
+		row_render_data $2140, pm_hud_on_row
+		lda WRAM_PracticeFlags
+		and #PF_HUDMode
+		beq @hud_on
+		row_render_data $2140, pm_hud_off_row
+	@hud_on:
 		rts
 
 copy_user_row:
@@ -156,7 +183,7 @@ copy_user_row:
 		sta CustomRow+$0A
 		rts
 
-_draw_pm_row_5:
+_draw_pm_row_7:
 		lda BANK_SELECTED
 		cmp #BANK_ORG
 		beq @is_org
@@ -172,10 +199,13 @@ _draw_pm_row_5:
 		lda #$21 ; X
 		sta $02
 		jsr copy_user_row
-		row_render_data $2120, CustomRow
+		row_render_data $2160, CustomRow
 		rts
 
-_draw_pm_row_6:
+_draw_pm_row_8:
+        row_render_data $23D8, pm_attr_data
+		inc $07
+		jsr draw_prepared_row
 		lda BANK_SELECTED
 		cmp #BANK_ORG
 		beq @is_org
@@ -191,10 +221,10 @@ _draw_pm_row_6:
 		lda #$22 ; Y
 		sta $02
 		jsr copy_user_row
-		row_render_data $2140, CustomRow
+		row_render_data $2180, CustomRow
 		rts
 
-_draw_pm_row_7:
+_draw_pm_row_9:
 		ldx WRAM_SlowMotion
 		beq @off
 		dex
@@ -203,57 +233,46 @@ _draw_pm_row_7:
 		beq @mid
 		dex
 		beq @max
-		row_render_data $2160, pm_slowmo_adv_row
+		row_render_data $21A0, pm_slowmo_adv_row
 		rts
 @max:
-		row_render_data $2160, pm_slowmo_max_row
+		row_render_data $21A0, pm_slowmo_max_row
 		rts
 @mid:
-		row_render_data $2160, pm_slowmo_mid_row
+		row_render_data $21A0, pm_slowmo_mid_row
 		rts
 @min:
-		row_render_data $2160, pm_slowmo_min_row
+		row_render_data $21A0, pm_slowmo_min_row
 		rts
 @off:
-		row_render_data $2160, pm_slowmo_off_row
-		rts
-
-_draw_pm_row_8:
-		row_render_data $23D8, pm_attr_data
-		inc $07
-		jsr draw_prepared_row
-		row_render_data $2180, pm_star_row
-		rts
-
-_draw_pm_row_9:
-		row_render_data $21A0, pm_restart_row
+		row_render_data $21A0, pm_slowmo_off_row
 		rts
 
 _draw_pm_row_10:
-		row_render_data $21C0, pm_save_row
+		row_render_data $21C0, pm_star_row
 		rts
 
 _draw_pm_row_11:
-		row_render_data $21E0, pm_load_row
+		row_render_data $21E0, pm_restart_row
 		rts
 
 _draw_pm_row_12:
-		row_render_data $23E0, pm_attr_data
+        row_render_data $23E0, pm_attr_data
 		inc $07
 		jsr draw_prepared_row
-		row_render_data $2200, pm_title_row
+		row_render_data $2200, pm_save_row
 		rts
 
 _draw_pm_row_13:
-		row_render_data $2220, pm_intro_row
+		row_render_data $2220, pm_load_row
 		rts
 
 _draw_pm_row_14:
-		row_render_data $2240, pm_empty_row
+		row_render_data $2240, pm_title_row
 		rts
 
 _draw_pm_row_15:
-		row_render_data $2260, pm_empty_row
+		row_render_data $2260, pm_intro_row
 		rts
 
 _draw_pm_row_16:
@@ -484,6 +503,18 @@ pm_toggle_show:
 @SockMode:
 		jmp ForceUpdateSockHashInner
 
+pm_toggle_input:
+		lda WRAM_PracticeFlags
+		eor #PF_InputMode
+		sta WRAM_PracticeFlags
+		rts
+
+pm_toggle_hud:
+		lda WRAM_PracticeFlags
+		eor #PF_HUDMode
+		sta WRAM_PracticeFlags
+		rts
+
 pm_slowmo:
 		ldx WRAM_SlowMotion
 		inx
@@ -539,6 +570,8 @@ pm_activation_slots:
 		.word pm_toggle_size
 		.word pm_toggle_hero
 		.word pm_toggle_show
+		.word pm_toggle_input
+		.word pm_toggle_hud
 		.word pm_low_user ; user
 		.word pm_low_user ;
 		.word pm_slowmo
@@ -577,7 +610,7 @@ get_user_selected:
 		lda BANK_SELECTED
 		cmp #BANK_ORG
 		beq @is_org
-		cpx #4
+		cpx #6
 		bne @is_0
 		lda #<WRAM_LostUser0
 		ldx #>WRAM_LostUser0
@@ -587,7 +620,7 @@ get_user_selected:
 		ldx #>WRAM_LostUser1
 		jmp @save
 @is_org:
-		cpx #4
+		cpx #6
 		beq @is_org_0
 		lda #<WRAM_OrgUser1
 		ldx #>WRAM_OrgUser1
@@ -713,10 +746,10 @@ RunPauseMenu:
 		stx WRAM_MenuIndex
 @exit:
 		ldx WRAM_MenuIndex
-		cpx #4
-		bcc @doneso
 		cpx #6
-		bcs @doneso ;4-5
+		bcc @doneso
+		cpx #8
+		bcs @doneso ;6-7
 		jmp do_uservar_input
 @doneso:
 		rts

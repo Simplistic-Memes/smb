@@ -155,6 +155,7 @@ SkipSprite0:
                jsr OperModeExecutionTree ;otherwise do one of many, many possible subroutines
 SkipMainOper:
                jsr Enter_RedrawUserVars
+               jsr Enter_UpdateStatusInput
                lda PPU_STATUS            ;reset flip-flop
                pla
                ora #%10000000            ;reactivate NMIs
@@ -397,6 +398,7 @@ IncMsgCounter: lda SecondaryMsgCounter
                sta PrimaryMsgCounter
                cmp #$07                      ;check primary counter one more time
 SetEndTimer:   bcc ExitMsgs                  ;if not reached value yet, branch to leave
+               jsr Enter_RedrawAll
                lda #$06
                sta WorldEndTimer             ;otherwise set world end timer
 IncModeTask_A: inc OperMode_Task             ;move onto next task in mode
@@ -8705,6 +8707,7 @@ RemoveBridge:
          sta Enemy_State,x         ;set bowser's state to one of defeated states (d6 set)
          lda #Sfx_BowserFall
          sta Square2SoundQueue     ;play bowser defeat sound
+         jsr Enter_EndOfCastle
 NoBFall: jmp BowserGfxHandler      ;jump to code that draws bowser
 
 ;--------------------------------
@@ -10543,19 +10546,13 @@ HandleCoinMetatile:
       jmp GiveOneCoin       ;update coin amount and tally on the screen
 
 HandleAxeMetatile:
-       jsr Enter_EndOfCastle
+       jsr Enter_RedrawAll
        lda #$00
        sta OperMode_Task   ;reset secondary mode
        lda #$02
        sta OperMode        ;set primary mode to autoctrl mode
        lda #$18
        sta Player_X_Speed  ;set horizontal speed and continue to erase axe metatile
-       cpx #1
-       bne @not_end_of_game
-       ;
-       ; ############### WARNING THIS ADDS A FRAME!!! #####################
-       ;
-       rts
 @not_end_of_game:
 
 ErACM: ldy $02             ;load vertical high nybble offset for block buffer

@@ -1,6 +1,12 @@
 # SMB & SMB2J Practice ROM
 
-A speedrun practice ROM for Super Mario Bros. and Super Mario Bros 2 - The Lost Levels.
+This is a fork of pellsson's excellent speedrun practice ROM for Super Mario Bros. and Super Mario Bros 2 - The Lost Levels.
+
+### Changes
+-The remainders displayed in castle stages have been fixed for Super Mario Bros., with The Lost Levels having been left unchanged.
+-A basic input display has been added, toggleable within the pause menu. Note that the user-defined RAM addresses cannot be displayed while input display is active.
+-The ability to disable practice-related information has been added, toggleable within the pause menu.
+-An error involving player position after touching the axe metatile in World 8-4 and D-4 has been fixed.
 
 For feature requests or bug reports, please visit the [issue tracker](https://github.com/pellsson/smb/issues).
 
@@ -85,17 +91,9 @@ save in Zelda (without savestates), power off the system, and load (without usin
 
 First download the desired version below:
 
-- [Version 5.6 - IPS](https://github.com/pellsson/smb/raw/master/smb-v5.6.ips)
+- [Version 5.6 - IPS](https://github.com/simplistic-memes/smb/raw/master/smb-v5.6.ips)
 
 Then simply apply that IPS (using for instance Lunar IPS) to the an original, unmodified version of the Super Mario Bros. (US/World) ROM. *DO NOT* use The Lost Levels. The MD5 checksum for the ROM you should be using is `811b027eaf99c2def7b933c5208636de`.
-
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-	<input type="hidden" name="cmd" value="_donations" />
-	<input type="hidden" name="business" value="66GJXJYBSFVB6" />
-	<input type="hidden" name="currency_code" value="USD" />
-	<input type="image" src="https://www.paypalobjects.com/en_US/SE/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-	<img alt="" border="0" src="https://www.paypal.com/en_SE/i/scr/pixel.gif" width="1" height="1" />
-</form>
 
 Have fun!
 

@@ -36,17 +36,17 @@ smb.nes: smb.bin
 	cat ines.bin smb.bin > smb.nes
 
 inc/wram.inc: wram/ram_layout.asm $(OUT)/ram_layout.map
-	python scripts/genram.py $(OUT)/ram_layout.map inc/wram.inc
+	python3 scripts/genram.py $(OUT)/ram_layout.map inc/wram.inc
 
 lost/wram-init.bin: wram/full.bin $(OUT)/ram_layout.map
-	python scripts/segram.py $(OUT)/ram_layout.map wram/full.bin WRAM_LostStart WRAM_LostEnd lost/wram-init.bin
+	python3 scripts/segram.py $(OUT)/ram_layout.map wram/full.bin WRAM_LostStart WRAM_LostEnd lost/wram-init.bin
 
 wram/full.bin $(OUT)/ram_layout.map: wram/ram_layout.asm
 	$(AS) $(AFLAGS) -l $(OUT)/ram_layout.map wram/ram_layout.asm -o build/ram_layout.o
 	$(LD) -C scripts/ram-link.cfg build/ram_layout.o -o wram/full.bin
 
 $(GEN_SCENARIOS): scripts/genscenarios.py $(SCENARIOS)
-	python scripts/genscenarios.py $(SCENARIOS) > $(GEN_SCENARIOS)
+	python3 scripts/genscenarios.py $(SCENARIOS) > $(GEN_SCENARIOS)
 
 $(OUT)/intro.o: $(INCS) intro/intro.asm intro/faxsound.asm intro/intro.inc intro/records.asm intro/smlsound.asm intro/nt.asm intro/settings.asm
 	$(AS) $(AFLAGS) -l $(OUT)/intro.map intro/intro.asm -o $@

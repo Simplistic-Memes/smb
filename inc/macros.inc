@@ -20,6 +20,11 @@
 .macro practice_callgate
 	.res $FE00 - *, $EA
 
+	Enter_UpdateStatusInput:
+		lda #BANK_COMMON
+		jsr SetBankFromA
+		jmp UpdateStatusInput
+
 	Enter_EndOfCastle:
 		lda #BANK_COMMON
 		jsr SetBankFromA

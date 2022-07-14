@@ -5,6 +5,8 @@ BANK_SELECTED = $07ff
 .define PF_LoadState $04
 .define PF_RestartLevel $08
 .define PF_LevelEntrySaved $10
+.define PF_InputMode $20
+.define PF_HUDMode $40
 
 .macro PF_SetToLevelEnd_A
 	lda WRAM_PracticeFlags

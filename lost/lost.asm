@@ -236,6 +236,7 @@ SkipSprite0:
 		jsr OperModeExecutionTree
 SkipMainOper:
 		jsr Enter_RedrawUserVars
+		jsr Enter_UpdateStatusInput
 		lda PPU_STATUS
 		lda Mirror_PPU_CTRL_REG1
 		ora #$80
@@ -9649,6 +9650,7 @@ loc_9C4A:
 		sta $1E,x
 		lda #$80
 		sta Square2SoundQueue
+		jsr Enter_EndOfCastle
 loc_9C93:
 
 		jmp loc_9DB0
@@ -11779,7 +11781,7 @@ loc_AA73:
 		jmp GiveOneCoin
 
 HandleAxeMetatile:
-		jsr Enter_EndOfCastle
+		jsr Enter_RedrawAll
 		lda #0
 		sta OperMode_Task
 		sta CurrentPlayer
@@ -11788,13 +11790,6 @@ HandleAxeMetatile:
 		sta OperMode
 		lda #$18
 		sta Player_X_Speed
-		cpx #1
-		bne @not_end_of_game
-		;
-		; ############### WARNING THIS ADDS A FRAME!!! #####################
-		;
-		rts
-@not_end_of_game:
 sub_AA8D:
 
 		ldy byte_2

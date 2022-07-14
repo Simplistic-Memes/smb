@@ -3,10 +3,10 @@
 This is a fork of pellsson's excellent speedrun practice ROM for Super Mario Bros. and Super Mario Bros 2 - The Lost Levels.
 
 ### Changes
--The remainders displayed in castle stages have been fixed for Super Mario Bros., with The Lost Levels having been left unchanged.
--A basic input display has been added, toggleable within the pause menu. Note that the user-defined RAM addresses cannot be displayed while input display is active.
--The ability to disable practice-related information has been added, toggleable within the pause menu.
--An error involving player position after touching the axe metatile in World 8-4 and D-4 has been fixed.
+- The remainders displayed in castle stages have been fixed for Super Mario Bros., with The Lost Levels having been left unchanged.
+- A basic input display has been added, toggleable within the pause menu. Note that the user-defined RAM addresses cannot be displayed while input display is active.
+- The ability to disable practice-related information has been added, toggleable within the pause menu.
+- An error involving player position after touching the axe metatile in World 8-4 and D-4 has been fixed.
 
 For feature requests or bug reports, please visit the [issue tracker](https://github.com/pellsson/smb/issues).
 

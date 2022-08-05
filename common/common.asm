@@ -25,6 +25,7 @@ NonMaskableInterrupt: ; Dummy
 	.include "pausemenu.asm"
 	.include "practice.asm"
 
+	.export LoadPhysicsData
 	.export UpdateStatusInput
 	.export EndOfCastle
 	.export RenderIntermediateTime

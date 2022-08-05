@@ -2173,6 +2173,7 @@ loc_6EA9:
 		sta AreaMusicQueue
 		lda #1
 		sta DisableScreenFlag
+		jsr Enter_LoadPhysicsData
 		inc OperMode_Task
 		rts
 
@@ -11784,10 +11785,9 @@ HandleAxeMetatile:
 		jsr Enter_RedrawAll
 		lda #0
 		sta OperMode_Task
-		sta CurrentPlayer
-		; TODO hackyfucky
 		lda #2
 		sta OperMode
+		jsr Enter_LoadPhysicsData
 		lda #$18
 		sta Player_X_Speed
 sub_AA8D:

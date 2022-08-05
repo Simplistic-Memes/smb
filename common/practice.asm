@@ -2165,3 +2165,13 @@ WriteA:
     adc #10
     sta VRAM_Buffer1_Offset
     rts
+
+LoadPhysicsData:
+        lda OperMode
+		ror
+		bcc LoadMarioPhysics
+		jsr LL_UpdatePlayerChange
+		bne RBank
+LoadMarioPhysics:
+        jsr PlayerIsMarioPatch
+RBank:  jmp ReturnBank

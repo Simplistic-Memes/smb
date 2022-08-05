@@ -381,7 +381,7 @@ RedrawFrameNumbersInner:
 		lda WRAM_PracticeFlags
         and #PF_HUDMode
         beq @cont
-		jmp @ndraw
+		bne @ndraw
 @cont:	ldy VRAM_Buffer1_Offset
 		lda #$20
 		sta VRAM_Buffer1, y
@@ -403,7 +403,7 @@ RedrawFrameNumbersInner:
 		lda WRAM_PracticeFlags
 		and #PF_SockMode
 		bne @dont_draw_rule
-		lda #$20
+        lda #$20
 		sta VRAM_Buffer1+6, y ; Offset for RULE (if any)
 		lda #$64
 		sta VRAM_Buffer1+7, y
@@ -426,8 +426,8 @@ RedrawFrameNumbersInner:
 		tya
 		clc
 		adc #6
-		sta VRAM_Buffer1_Offset
-@ndraw:	ldx ObjectOffset
+        sta VRAM_Buffer1_Offset
+@ndraw: ldx ObjectOffset
 		rts
 
 RedrawFrameNumbers:
@@ -1274,8 +1274,8 @@ noredraw:
 
 RedrawUserVars:
         lda WRAM_PracticeFlags
-        and #%01100000
-        bne noredraw
+		and #PF_InputMode
+		bne noredraw
 		lda WRAM_UserFramesLeft
 		bne noredraw_dec
 		ldy VRAM_Buffer1_Offset
@@ -2065,17 +2065,20 @@ EndOfCastle:
 UpdateStatusInput:
     lda WRAM_PracticeFlags
     and #PF_InputMode
-	beq NI
+	beq @exit
+    lda OperMode
+	beq @exit
 	lda GameEngineSubroutine
-	beq NI
+	beq @exit
 	ldx VRAM_Buffer1_Offset
     cpx #$31
-    bcs NI
+    bcs @exit
     lda #$20
     ldx #$71
     ldy JoypadBitMask
     jsr DrawInputButtons
-NI: jmp ReturnBank
+@exit:
+    jmp ReturnBank
 DrawInputButtons:
     sty $03
     ldy VRAM_Buffer1_Offset
@@ -2169,9 +2172,9 @@ WriteA:
 LoadPhysicsData:
         lda OperMode
 		ror
-		bcc LoadMarioPhysics
+		bcc @loadmariophysics
 		jsr LL_UpdatePlayerChange
-		bne RBank
-LoadMarioPhysics:
+		bne @exit
+@loadmariophysics:
         jsr PlayerIsMarioPatch
-RBank:  jmp ReturnBank
+@exit:  jmp ReturnBank

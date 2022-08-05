@@ -7,6 +7,8 @@ This is a fork of pellsson's excellent speedrun practice ROM for Super Mario Bro
 - A basic input display has been added, toggleable within the pause menu. Note that the user-defined RAM addresses cannot be displayed while input display is active.
 - The ability to disable practice-related information has been added, toggleable within the pause menu.
 - An error involving player position after touching the axe metatile in World 8-4 and D-4 has been fixed.
+- Save states, framerules, and other settings are now properly preserved after power-off.
+- An error involving Luigi's physics after touching the axe metatile at the end of any castle level has been fixed.
 
 For feature requests or bug reports, please visit the [issue tracker](https://github.com/pellsson/smb/issues).
 

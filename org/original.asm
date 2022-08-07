@@ -5992,9 +5992,8 @@ DrawFlagSetTimer:
       sta EnemyIntervalTimer,x  ;set interval timer here
 
 IncrementSFTask2:
-      jsr Enter_RedrawAll
       inc StarFlagTaskControl   ;move onto next task
-      rts
+      jmp Enter_RedrawAll
 
 DelayToAreaEnd:
       jsr DrawStarFlag          ;do sub to draw star flag
@@ -10526,6 +10525,7 @@ ChkGERtn: lda GameEngineSubroutine   ;get number of game engine routine running
           bne ExCSM
           lda #$02
           sta GameEngineSubroutine   ;otherwise set sideways pipe entry routine to run
+          jsr Enter_RedrawAll
           rts                        ;and leave
 
 ;--------------------------------
@@ -10546,11 +10546,11 @@ HandleCoinMetatile:
       jmp GiveOneCoin       ;update coin amount and tally on the screen
 
 HandleAxeMetatile:
-       jsr Enter_RedrawAll
        lda #$00
        sta OperMode_Task   ;reset secondary mode
        lda #$02
        sta OperMode        ;set primary mode to autoctrl mode
+       jsr Enter_RedrawAll
        lda #$18
        sta Player_X_Speed  ;set horizontal speed and continue to erase axe metatile
 @not_end_of_game:

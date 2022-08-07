@@ -344,8 +344,20 @@ WritePracticeTop:
 RedrawFramesRemaningInner:
 		lda WRAM_PracticeFlags
         and #PF_HUDMode
-        bne @ndraw
-		ldy VRAM_Buffer1_Offset
+        beq @cont
+		lda StarFlagTaskControl
+		cmp #$04
+		beq @cont
+		lda OperMode
+		cmp #$02
+		beq @cont
+		lda GameEngineSubroutine
+		cmp #$03
+		bne @ndraw
+		lda WarpZoneControl
+		bne @cont
+@ndraw:	rts
+@cont:	ldy VRAM_Buffer1_Offset
 		lda #$20
 		sta VRAM_Buffer1, y
 		lda #$7E
@@ -363,7 +375,7 @@ RedrawFramesRemaningInner:
 		tya
 		adc #5
 		sta VRAM_Buffer1_Offset
-@ndraw: rts
+        rts
 
 RedrawAllInner:
 		jsr RedrawFramesRemaningInner
@@ -380,7 +392,6 @@ RedrawFrameNumbersInner:
 		beq @cont
 		lda WRAM_PracticeFlags
         and #PF_HUDMode
-        beq @cont
 		bne @ndraw
 @cont:	ldy VRAM_Buffer1_Offset
 		lda #$20

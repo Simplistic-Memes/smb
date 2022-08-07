@@ -10101,9 +10101,8 @@ DrawFlagSetTimer:
 		lda #6
 		sta $796,x
 IncrementSFTask2:
-		jsr Enter_RedrawAll
-		inc StarFlagTaskControl
-		rts
+        inc StarFlagTaskControl
+		jmp Enter_RedrawAll
 
 DelayToAreaEnd:
 		jsr DrawStarFlag
@@ -11764,6 +11763,7 @@ loc_AA5E:
 		bne locret_AA70
 		lda #2
 		sta GameEngineSubroutine
+		jsr Enter_RedrawAll
 		rts
 loc_AA6D:
 
@@ -11782,11 +11782,11 @@ loc_AA73:
 		jmp GiveOneCoin
 
 HandleAxeMetatile:
-		jsr Enter_RedrawAll
 		lda #0
 		sta OperMode_Task
 		lda #2
 		sta OperMode
+		jsr Enter_RedrawAll
 		jsr Enter_LoadPhysicsData
 		lda #$18
 		sta Player_X_Speed

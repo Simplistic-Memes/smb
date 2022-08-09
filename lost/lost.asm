@@ -236,7 +236,6 @@ SkipSprite0:
 		jsr OperModeExecutionTree
 SkipMainOper:
 		jsr Enter_RedrawUserVars
-		jsr Enter_UpdateStatusInput
 		lda PPU_STATUS
 		lda Mirror_PPU_CTRL_REG1
 		ora #$80
@@ -2173,7 +2172,7 @@ loc_6EA9:
 		sta AreaMusicQueue
 		lda #1
 		sta DisableScreenFlag
-		jsr Enter_LoadPhysicsData
+		jsr Enter_LL_LoadPhysicsData
 		inc OperMode_Task
 		rts
 
@@ -11787,7 +11786,7 @@ HandleAxeMetatile:
 		lda #2
 		sta OperMode
 		jsr Enter_RedrawAll
-		jsr Enter_LoadPhysicsData
+		jsr Enter_LL_LoadPhysicsData
 		lda #$18
 		sta Player_X_Speed
 sub_AA8D:

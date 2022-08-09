@@ -20,15 +20,10 @@
 .macro practice_callgate
 	.res $FE00 - *, $EA
 
-	Enter_LoadPhysicsData:
+	Enter_LL_LoadPhysicsData:
 		lda #BANK_COMMON
 		jsr SetBankFromA
-		jmp LoadPhysicsData
-
-	Enter_UpdateStatusInput:
-		lda #BANK_COMMON
-		jsr SetBankFromA
-		jmp UpdateStatusInput
+		jmp LL_LoadPhysicsData
 
 	Enter_EndOfCastle:
 		lda #BANK_COMMON

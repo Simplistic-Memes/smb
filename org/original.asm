@@ -155,7 +155,6 @@ SkipSprite0:
                jsr OperModeExecutionTree ;otherwise do one of many, many possible subroutines
 SkipMainOper:
                jsr Enter_RedrawUserVars
-               jsr Enter_UpdateStatusInput
                lda PPU_STATUS            ;reset flip-flop
                pla
                ora #%10000000            ;reactivate NMIs

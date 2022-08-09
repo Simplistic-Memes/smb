@@ -1282,11 +1282,13 @@ noredraw_dec:
 		dec WRAM_UserFramesLeft
 noredraw:
 		jmp ReturnBank
+drawinput:
+        jmp UpdateStatusInput
 
 RedrawUserVars:
         lda WRAM_PracticeFlags
 		and #PF_InputMode
-		bne noredraw
+		bne drawinput
 		lda WRAM_UserFramesLeft
 		bne noredraw_dec
 		ldy VRAM_Buffer1_Offset
@@ -2082,7 +2084,7 @@ UpdateStatusInput:
 	lda GameEngineSubroutine
 	beq @exit
 	ldx VRAM_Buffer1_Offset
-    cpx #$31
+    cpx #$2e-6 ;TODO see if this actually fixes the problem
     bcs @exit
     lda #$20
     ldx #$71
@@ -2180,7 +2182,7 @@ WriteA:
     sta VRAM_Buffer1_Offset
     rts
 
-LoadPhysicsData:
+LL_LoadPhysicsData:
         lda OperMode
 		ror
 		bcc @loadmariophysics
